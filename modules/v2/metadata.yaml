@@ -327,7 +327,7 @@ spec:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-run///modules/v2
               version: v1.0.0
             spec:
-              outputExpr: {"SERVICE_ENDPOINT": service_uri}
+              outputExpr: '{"SERVICE_ENDPOINT": service_uri}'
               inputPath: env_vars
       - name: members
         description: Users/SAs to be given invoker access to the service
