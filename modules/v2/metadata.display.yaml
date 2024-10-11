@@ -26,6 +26,10 @@ spec:
       sourceType: git
       dir: /modules/v2
   ui:
+    runtime:
+      outputs:
+        service_uri:
+          visibility: VISIBILITY_ROOT
     input:
       variables:
         binary_authorization:
