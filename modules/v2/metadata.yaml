@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/v2
-    version: 1.0.7
+    version: 1.0.8
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -301,7 +301,7 @@ spec:
         connections:
           - source:
               source: github.com/ayushmjain/terraform-google-bigquery
-              version: v1.0.1
+              version: v1.0.2
             spec:
               outputExpr: "{\"BIGQUERY_DATASET\" : env_vars.BIGQUERY_DATASET, \"BIGQUERY_TABLES\" : env_vars.BIGQUERY_TABLES, \"BIGQUERY_VIEWS\" : env_vars.BIGQUERY_VIEWS, \"BIGQUERY_MATERIALIZED_VIEWS\" : env_vars.BIGQUERY_MATERIALIZED_VIEWS, \"BIGQUERY_EXTERNAL_TABLES\" : env_vars.BIGQUERY_EXTERNAL_TABLES, \"BIGQUERY_ROUTINES\" : env_vars.BIGQUERY_ROUTINES}"
               inputPath: env_vars
@@ -313,7 +313,7 @@ spec:
               inputPath: env_vars
           - source:
               source: github.com/ayushmjain/terraform-google-sql-db//modules/postgresql
-              version: v1.0.6
+              version: v1.0.7
             spec:
               outputExpr: "{\"CLOUD_SQL_DATABASE_HOST\" : instance_first_ip_address, \"CLOUD_SQL_DATABASE_CONNECTION_NAME\" : instance_connection_name, \"CLOUD_SQL_DATABASE_NAME\" : env_vars.CLOUD_SQL_DATABASE_NAME}"
               inputPath: env_vars
@@ -331,7 +331,7 @@ spec:
               inputPath: env_vars
           - source:
               source: github.com/ayushmjain/terraform-google-cloud-run//modules/v2
-              version: v1.0.7
+              version: v1.0.8
             spec:
               outputExpr: '{"SERVICE_ENDPOINT": service_uri}'
               inputPath: env_vars
@@ -347,6 +347,22 @@ spec:
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
         varType: list(string)
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/ayushmjain/terraform-google-sql-db//modules/postgresql
+              version: v1.0.7
+            spec:
+              outputExpr: "[\"roles/cloudsql.instanceUser\", \"roles/cloudsql.client\"]"
+          - source:
+              source: github.com/ayushmjain/terraform-google-memorystore
+              version: v1.0.0
+            spec:
+              outputExpr: "[\"roles/redis.editor\"]"
+          - source:
+              source: github.com/ayushmjain/terraform-google-bigquery
+              version: v1.0.2
+            spec:
+              outputExpr: "[\"roles/bigquery.dataEditor\"]"
     outputs:
       - name: creator
         description: Email address of the authenticated creator.
