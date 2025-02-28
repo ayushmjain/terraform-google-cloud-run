@@ -22,10 +22,10 @@ spec:
   info:
     title: Cloud Run v2 Service
     source:
-      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      repo: https://github.com/ayushmjain/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/v2
-    version: 0.16.3
+    version: 1.0.9
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -142,6 +142,12 @@ spec:
         required: true
         connections:
           - source:
+              source: github.com/ayushmjain/terraform-google-bigquery
+              version: v1.0.4
+            spec:
+              outputExpr: "{\"BIGQUERY_DATASET\" : env_vars.BIGQUERY_DATASET, \"BIGQUERY_TABLES\" : env_vars.BIGQUERY_TABLES, \"BIGQUERY_VIEWS\" : env_vars.BIGQUERY_VIEWS, \"BIGQUERY_MATERIALIZED_VIEWS\" : env_vars.BIGQUERY_MATERIALIZED_VIEWS, \"BIGQUERY_EXTERNAL_TABLES\" : env_vars.BIGQUERY_EXTERNAL_TABLES, \"BIGQUERY_ROUTINES\" : env_vars.BIGQUERY_ROUTINES}"
+              inputPath: env_vars
+          - source:
               source: github.com/terraform-google-modules/terraform-google-memorystore
               version: ">= 12.0"
             spec:
@@ -166,7 +172,7 @@ spec:
               outputExpr: "{\"SERVICE_ACCOUNT_EMAIL\" : email, \"SERVICE_ACCOUNT_IAM_EMAIL\" : iam_email}"
               inputPath: env_vars
           - source:
-              source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+              source: github.com/ayushmjain/terraform-google-cloud-run//modules/v2
               version: ">= 0.13"
             spec:
               outputExpr: "{\"SERVICE_ENDPOINT\": service_uri}"
@@ -193,6 +199,11 @@ spec:
         defaultValue: []
         connections:
           - source:
+              source: github.com/ayushmjain/terraform-google-bigquery
+              version: v1.0.4
+            spec:
+              outputExpr: "[\"roles/bigquery.dataEditor\"]"
+          - source:
               source: github.com/GoogleCloudPlatform/terraform-google-secret-manager//modules/simple-secret
               version: ">= 0.5.1"
             spec:
@@ -213,7 +224,7 @@ spec:
             spec:
               outputExpr: "[\"roles/redis.editor\"]"
           - source:
-              source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+              source: github.com/ayushmjain/terraform-google-cloud-run//modules/v2
               version: ">= 0.13"
             spec:
               outputExpr: "[\"roles/run.invoker\"]"
